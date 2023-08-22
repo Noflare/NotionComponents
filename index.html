@@ -1,10 +1,167 @@
-<div class="main">
-  <div class="post-wrap">
-    <div id="clock-body">
-      <div id="center"></div>
-      <div id="seconds"></div>
-      <div id="minutes"></div>
-      <div id="hours"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flat Realtime Clock</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <style>
+    /* Your combined CSS code here */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #191919;
+    }
+
+    .main {
+      background: #191919;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    #clock-body {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      border: 3px solid white;
+    }
+
+    #center, #seconds, #minutes, #hours {
+      position: absolute;
+      background-color: white;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      outline: 1px solid transparent;
+    }
+
+    #center {
+      z-index: 4;
+      height: 3%;
+      width: 3%;
+      top: 50%;
+      margin-top: -1.5%;
+      left: 50%;
+      margin-left: -1.5%;
+      border-radius: 100%;
+      background: #191919;
+      border: 3px solid white;
+    }
+
+    #seconds {
+      z-index: 1;
+      left: 50%;
+      margin-left: -0.3%;
+      bottom: 50%;
+      width: 0.6%;
+      height: 49%;
+      border-top-right-radius: 40%;
+      border-top-left-radius: 40%;
+      transform-origin: bottom;
+    }
+
+    #minutes {
+      z-index: 2;
+      left: 50%;
+      margin-left: -0.7%;
+      bottom: 50%;
+      width: 1.4%;
+      height: 47%;
+      border-top-right-radius: 40%;
+      border-top-left-radius: 40%;
+      transform-origin: bottom;
+    }
+
+    #hours {
+      z-index: 3;
+      left: 50%;
+      margin-left: -0.7%;
+      bottom: 50%;
+      width: 1.4%;
+      height: 36%;
+      border-top-right-radius: 50%;
+      border-top-left-radius: 50%;
+      transform-origin: bottom;
+    }
+
+    .post-wrap {
+      width: 100vw;
+      height: 100vw;
+      /* height:width ratio */
+      max-height: 100vh;
+      max-width: 100vh;
+      /* height:width ratio */
+      margin: 0 auto;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      /* vertical center */
+      left: 0;
+      right: 0;
+      /* horizontal center */
+      overflow: hidden;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <div class="post-wrap">
+      <div id="clock-body">
+        <div id="center"></div>
+        <div id="seconds"></div>
+        <div id="minutes"></div>
+        <div id="hours"></div>
+      </div>
     </div>
   </div>
-</div>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js'></script>
+  <script>
+    // Your JavaScript code here
+    var lastHr,
+        lastMin;
+
+    function leTime(){
+      this.fullDate = new Date();
+      this.secs = this.fullDate.getSeconds();
+      this.mins = this.fullDate.getMinutes();
+      this.hrs = this.fullDate.getHours() % 12;
+      return this;
+    }
+
+    function leClock(){
+      var sec = document.getElementById("seconds"),
+          min = document.getElementById("minutes"),
+          hr = document.getElementById("hours");
+      if(leTime().secs == 0){
+        TweenMax.to(sec, 0.35, {rotation: 360, ease: Elastic.easeOut.config(1,0.4), clearProps: "all"});
+      } else {
+        TweenMax.to(sec, 0.35, {rotation: leTime().secs*6, ease: Elastic.easeOut.config(1,0.4)});
+      }
+      if(leTime().mins !== lastMin){
+        if(leTime().mins == 0){
+          TweenMax.to(min, 0.35, {rotation: 360, ease: Elastic.easeOut.config(1,0.4), clearProps: "all"});
+        } else {
+         TweenMax.to(min, 0.35, {rotation: leTime().mins*6, ease: Elastic.easeOut.config(1,0.4)});
+        }
+      }
+      if(leTime().hrs !== lastHr){
+        if(leTime().hrs == 0){
+          TweenMax.to(hr, 0.35, {rotation: 360, ease: Elastic.easeOut.config(1,0.4), clearProps: "all"});
+        } else {
+          TweenMax.to(hr, 0.35, {rotation: leTime().hrs*30, ease: Elastic.easeOut.config(1,0.4)});
+        }
+      }
+      lastHr = leTime().hrs;
+      lastMin = leTime().mins;
+      setTimeout(leClock, 1000);
+    }
+
+    window.onload = leClock;
+  </script>
+</body>
+</html>
