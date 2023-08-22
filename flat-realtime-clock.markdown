@@ -1,0 +1,7 @@
+Flat Realtime Clock
+-------------------
+This is the first time I opened up codepen without viewing prior inspiration. I just wanted to see if I had it in me to make a clock.
+
+A [Pen](https://codepen.io/noflare/pen/abPOOZQ) by [Noflare](https://codepen.io/noflare) on [CodePen](https://codepen.io).
+
+[License](https://codepen.io/license/pen/abPOOZQ).
